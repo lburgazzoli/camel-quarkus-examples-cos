@@ -1,0 +1,45 @@
+apiVersion: camel.apache.org/v1alpha1
+kind: Kamelet
+metadata:
+  name: ephemeral-kafka-source
+  annotations:
+    camel.apache.org/kamelet.support.level: "Stable"
+    camel.apache.org/catalog.version: "main-SNAPSHOT"
+    camel.apache.org/kamelet.group: "Kafka"
+    camel.apache.org/keda.type: "kafka"
+  labels:
+    camel.apache.org/kamelet.type: "source"
+spec:
+  definition:
+    title: "Kafka"
+    description: "TODO"
+    required:
+      - topic
+      - bootstrapServers
+    type: object
+    properties:
+      topic:
+        title: Topic Names
+        type: string
+      bootstrapServers:
+        title: Bootstrap Servers
+        type: string
+      consumerGroup:
+        title: Consumer Group
+        type: string
+  dependencies:
+    - "camel:kafka"
+    - "camel:kamelet"
+  template:
+    beans:
+      - name: "offset-repo"
+        type: "#class:org.apache.camel.impl.engine.MemoryStateRepository"
+    from:
+      uri: "kafka:{{topic}}"
+      parameters:
+        brokers: "{{bootstrapServers}}"
+        autoOffsetReset: "earliest"
+        groupId: "{{?consumerGroup}}"
+        offsetRepository: "#{{offset-repo}}"
+      steps:
+        - to: "kamelet:sink"

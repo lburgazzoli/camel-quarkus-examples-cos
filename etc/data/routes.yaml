@@ -1,0 +1,23 @@
+- route:
+    from:
+      steps:
+        - to:
+            uri: "log:before?showAll=true&multiline=true"
+        - to:
+            uri: "kamelet:cos-encoder-bytearray-action"
+        - removeHeader:
+            name: "X-Content-Schema"
+        - removeProperty:
+            name: "X-Content-Schema"
+        - to:
+            uri: "log:debug?showAll=true&multiline=true"
+        - to:
+            uri: "kamelet:cos-http-sink"
+            parameters:
+              method: "POST"
+              url: "https://httpbin.org/post"
+      uri: "kamelet:cos-kafka-not-secured-source"
+      parameters:
+        bootstrapServers: "localhost:9092"
+        consumerGroup: "test"
+        topic: "test"
