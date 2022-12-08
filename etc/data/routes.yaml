@@ -1,5 +1,19 @@
+- beans:
+    - name: myErrorHandler
+      type: org.apache.camel.model.errorhandler.DeadLetterChannelDefinition
+      properties:
+        dead-letter-uri: "log:info"
+        redelivery-delay: 0
+- error-handler:
+    ref: "myErrorHandler"
 - route:
     from:
+      uri: "kamelet:secured-kafka-source"
+      parameters:
+        bootstrapServers: "{{test.kafka.broker}}"
+        user: "{{test.kafka.username}}"
+        password: "{{test.kafka.password}}"
+        topic: "demo"
       steps:
         - to:
             uri: "log:before?showAll=true&multiline=true"
@@ -16,8 +30,3 @@
             parameters:
               method: "POST"
               url: "https://httpbin.org/post"
-      uri: "kamelet:cos-kafka-not-secured-source"
-      parameters:
-        bootstrapServers: "localhost:9092"
-        consumerGroup: "test"
-        topic: "test"

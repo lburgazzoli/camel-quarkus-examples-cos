@@ -1,0 +1,42 @@
+apiVersion: camel.apache.org/v1alpha1
+kind: Kamelet
+metadata:
+  name: secured-kafka-source
+  annotations:
+    camel.apache.org/kamelet.support.level: "Stable"
+    camel.apache.org/catalog.version: "main-SNAPSHOT"
+    camel.apache.org/kamelet.group: "Kafka"
+    camel.apache.org/keda.type: "kafka"
+  labels:
+    camel.apache.org/kamelet.type: "source"
+spec:
+  definition:
+    title: "Kafka Source"
+    description: |-
+      Receive data from Managed Kafka topics.
+    required:
+      - topic
+    type: object
+    properties:
+      topic:
+        title: Topic Names
+        description: A comma-separated list of Kafka topic names.
+        type: string
+  dependencies:
+    - "camel:kafka"
+    - "camel:kamelet"
+  template:
+    from:
+      uri: "kafka:{{topic}}"
+      parameters:
+        brokers: "{{bootstrapServers}}"
+        securityProtocol: "{{securityProtocol:SASL_PLAINTEXT}}"
+        saslMechanism: "{{saslMechanism:SCRAM-SHA-256}}"
+        saslJaasConfig: "org.apache.kafka.common.security.scram.ScramLoginModule required username='{{user}}' password='{{password}}';"
+        autoOffsetReset: "{{autoOffsetReset:latest}}"
+        groupId: "{{?consumerGroup}}"
+        pollOnError: "RECONNECT"
+      steps:
+      - removeHeader:
+          name: "kafka.HEADERS"
+      - to: "kamelet:sink"

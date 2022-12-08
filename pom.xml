@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.example</groupId>
-    <artifactId>camel-quarkus-examples-metrics</artifactId>
+    <artifactId>camel-quarkus-examples-cos</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
@@ -130,30 +130,22 @@
 
         <dependency>
             <groupId>org.bf2</groupId>
-            <artifactId>cos-connector-action-jsonpath</artifactId>
-            <version>${cos.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.bf2</groupId>
-            <artifactId>cos-connector-action-serdes</artifactId>
-            <version>${cos.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.bf2</groupId>
             <artifactId>cos-connector-camel</artifactId>
             <version>${cos.version}</version>
         </dependency>
         <dependency>
             <groupId>org.bf2</groupId>
-            <artifactId>cos-connector-kafka</artifactId>
-            <version>${cos.version}</version>
+            <artifactId>cos-connector-serdes</artifactId>
+            <version>${cos.components.version}</version>
         </dependency>
         <dependency>
             <groupId>org.bf2</groupId>
-            <artifactId>cos-fleet-catalog-kamelets</artifactId>
-            <version>${cos.version}</version>
+            <artifactId>cos-connector-kafka</artifactId>
+            <version>${cos.components.version}</version>
         </dependency>
 
+
+        <!-- camel -->
         <dependency>
             <groupId>org.bf2</groupId>
             <artifactId>cos-connector-camel-component-routecontroller</artifactId>

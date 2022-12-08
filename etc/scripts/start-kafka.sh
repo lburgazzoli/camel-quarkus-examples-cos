@@ -10,4 +10,18 @@ docker run \
   -p 9644:9644 \
   docker.redpanda.com/vectorized/redpanda:latest \
   redpanda start \
-    --mode dev-container
+    --mode dev-container \
+    --set redpanda.enable_sasl=true \
+    --set redpanda.superusers=["admin"]
+
+
+# rpk acl user create admin -p admin
+# rpk acl user create foo -p baz
+# rpk acl create \
+#   --allow-principal '*' \
+#   --operation all \
+#   --topic test  \
+#   --group '*' \
+#   --user admin \
+#   --password admin \
+#   --sasl-mechanism SCRAM-SHA-256
