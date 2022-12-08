@@ -18,10 +18,10 @@ docker run \
 # rpk acl user create admin -p admin
 # rpk acl user create foo -p baz
 # rpk acl create \
-#   --allow-principal '*' \
-#   --operation all \
-#   --topic test  \
-#   --group '*' \
-#   --user admin \
-#   --password admin \
-#   --sasl-mechanism SCRAM-SHA-256
+#    --allow-principal '*' \
+#    --operation all \
+#    --topic demo  \
+#    --group '*' \
+#    --user admin \
+#    --password admin \
+#    --sasl-mechanism SCRAM-SHA-256
