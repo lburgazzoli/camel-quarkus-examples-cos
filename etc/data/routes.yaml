@@ -8,7 +8,7 @@
     ref: "myErrorHandler"
 - route:
     from:
-      uri: "kamelet:secured-kafka-source"
+      uri: "kamelet:plain-kafka-source"
       parameters:
         bootstrapServers: "{{test.kafka.broker}}"
         user: "{{test.kafka.username}}"
